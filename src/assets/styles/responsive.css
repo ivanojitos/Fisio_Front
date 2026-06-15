@@ -1,0 +1,14 @@
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -260px;
+  }
+
+  .content {
+    padding: 15px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
