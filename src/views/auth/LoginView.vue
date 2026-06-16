@@ -99,7 +99,7 @@ const handleLogin = async () => {
       router.push(roleRedirect[rol] || { name: '/login' })
     }
   } catch (err) {
-    if (err.response.data.ok) {
+    if (err.response?.data?.ok) {
       const user = err.response.data.user
       const rol = err.response.data.rol
 
