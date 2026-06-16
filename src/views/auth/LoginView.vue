@@ -96,7 +96,6 @@ const handleLogin = async () => {
       localStorage.setItem('user', JSON.stringify(user))
       localStorage.setItem('role', rol)
 
-      // 🚀 navegación limpia
       router.push(roleRedirect[rol] || { name: '/login' })
     }
   } catch (err) {
