@@ -33,6 +33,9 @@
             ¿No tienes cuenta?
             <router-link to="/register">Regístrate</router-link>
           </p>
+          <button type="button" class="btn-admin" @click="openSecurityModal">
+            ➕ Registrar Administrador
+          </button>
         </form>
       </div>
       <!-- MODAL ERROR -->
@@ -59,6 +62,28 @@
       </div>
     </div>
   </div>
+
+  <div v-if="showSecurityModal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-icon">🔐</div>
+
+      <h3>Acceso restringido</h3>
+      <p>Ingresa la contraseña de administrador</p>
+
+      <input
+        v-model="securityPassword"
+        type="password"
+        placeholder="Contraseña..."
+        class="security-input"
+      />
+
+      <button class="modal-btn" @click="validateAndRedirect">Entrar</button>
+
+      <p v-if="securityError" class="error-text">
+        {{ securityError }}
+      </p>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -73,9 +98,12 @@ const email = ref('')
 const password = ref('')
 const error = ref('')
 const successModal = ref(false)
+const showSecurityModal = ref(false)
+const securityPassword = ref('')
+const securityError = ref('')
 
 const roleRedirect = {
-  // admin: { name: 'DashAdministrador' },
+  admin: '/DashAdministrador',
   paciente: '/dashboard',
 }
 
@@ -96,7 +124,7 @@ const handleLogin = async () => {
       localStorage.setItem('user', JSON.stringify(user))
       localStorage.setItem('role', rol)
 
-      router.push(roleRedirect[rol] || { name: '/login' })
+      router.push(roleRedirect[rol] || '/login')
     }
   } catch (err) {
     if (err.response?.data?.ok) {
@@ -121,9 +149,39 @@ const handleLogin = async () => {
     }
   }
 }
+
+const openSecurityModal = () => {
+  securityPassword.value = ''
+  securityError.value = ''
+  showSecurityModal.value = true
+}
+
+// 🔐 validación + redirección
+const validateAndRedirect = () => {
+  if (securityPassword.value === 'admin2026*') {
+    showSecurityModal.value = false
+
+    // 👉 AQUÍ LA REDIRECCIÓN A TU VISTA
+    router.push('/createAdmin')
+  } else {
+    securityError.value = 'Contraseña incorrecta'
+  }
+}
 </script>
 
 <style scoped>
+.security-input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.error-text {
+  color: #ef4444;
+  margin-top: 10px;
+}
 /* ==================================
    LOGIN
 ================================== */
