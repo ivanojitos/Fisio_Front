@@ -1,13 +1,17 @@
 <template>
   <aside :class="['sidebar', { open: mobileOpen }]">
-    <div class="logo">🏥 FisioCare</div>
+    <div class="logo">🏥 Fisio</div>
 
-    <nav>
+    <nav v-if="usuario?.Rol === 'user'">
       <router-link to="/dashboard">🏠 Dashboard</router-link>
       <router-link to="/profile">👤 Perfil</router-link>
       <router-link to="/appointments">📅 Citas</router-link>
       <router-link to="/clinical-history">📄 Historial</router-link>
       <!-- <router-link to="/recommendations">💡 Recomendaciones</router-link> -->
+    </nav>
+    <nav v-else>
+      <router-link to="/DashAdministrador">🏠 Dashboard</router-link>
+      <router-link to="/HorariosAdministrador">👤 Horarios</router-link>
     </nav>
 
     <button class="logout" @click="logout">🚪 Cerrar sesión</button>
@@ -17,14 +21,24 @@
 <script setup>
 import { useAuthStore } from '@/stores/authStore'
 import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
 
 const auth = useAuthStore()
 const router = useRouter()
+const usuario = ref(null)
 
 const logout = () => {
   auth.logout()
   router.push('/login')
 }
+
+onMounted(() => {
+  const data = localStorage.getItem('user')
+
+  if (data) {
+    usuario.value = JSON.parse(data)
+  }
+})
 
 defineProps({
   mobileOpen: Boolean,

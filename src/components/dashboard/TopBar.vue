@@ -6,11 +6,11 @@
 
     <div class="user">
       <div class="avatar">
-        {{ auth.user?.name?.charAt(0) }}
+        {{ auth.user?.Foto?.charAt(0) }}
       </div>
 
       <div class="info">
-        <p class="name">{{ auth.user?.name }}</p>
+        <p class="name">{{ auth.user?.Nombre }}</p>
         <p class="role">Paciente</p>
       </div>
     </div>

@@ -241,26 +241,15 @@ const fetchPacientes = async () => {
 =========================== */
 
 const citasDelDia = computed(() => {
-  const selected = normalizeDate(selectedDate.value)
+  const selected =
+    selectedDate.value.getFullYear() +
+    '-' +
+    String(selectedDate.value.getMonth() + 1).padStart(2, '0') +
+    '-' +
+    String(selectedDate.value.getDate()).padStart(2, '0')
 
-  return citas.value.filter((c) => normalizeDate(c.fecha) === selected)
+  return citas.value.filter((c) => c.fecha === selected)
 })
-
-const normalizeDate = (date) => {
-  if (!date) return ''
-
-  const d = new Date(date)
-
-  if (isNaN(d.getTime())) return ''
-
-  return (
-    d.getFullYear() +
-    '-' +
-    String(d.getMonth() + 1).padStart(2, '0') +
-    '-' +
-    String(d.getDate()).padStart(2, '0')
-  )
-}
 
 const selectedDateLabel = computed(() =>
   selectedDate.value.toLocaleDateString('es-MX', {
@@ -324,9 +313,9 @@ const nextDay = () => {
    SELECCIONAR CITA
 =========================== */
 
-const selectCita = (cita) => {
-  selectedCita.value = cita
-}
+// const selectCita = (cita) => {
+//   selectedCita.value = cita
+// }
 
 /* ===========================
    CREAR CITA
@@ -396,14 +385,20 @@ const createCita = async () => {
   }
 }
 
+const formatHora = (horaISO) => {
+  const d = new Date(horaISO)
+
+  return `${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`
+}
+
 const fetchCitas = async () => {
   try {
     const response = await axios.get(`${API}/api/citas`)
-
+    console.log(response.data.data)
     citas.value = response.data.data.map((c) => ({
       id: c.Id,
-      fecha: c.Fecha,
-      hora: new Date(c.Hora).toTimeString().slice(0, 5), // 👈 FIX
+      fecha: c.Fecha.slice(0, 10), // <-- IMPORTANTE
+      hora: formatHora(c.Hora),
       tipo: c.Tipo,
       notas: c.Notas,
       paciente_id: c.Paciente_Id,
