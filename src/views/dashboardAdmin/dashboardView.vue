@@ -85,6 +85,11 @@
           <h2>Detalle de cita</h2>
 
           <div v-if="selectedCita" class="detail-box">
+            <div class="detail-actions">
+              <button class="btn-profile" @click="goToPerfilPaciente">
+                👤 Ver perfil del paciente
+              </button>
+            </div>
             <h3>{{ selectedCita.paciente_nombre || 'Paciente #' + selectedCita.paciente_id }}</h3>
 
             <div class="row">
@@ -192,7 +197,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import axios from 'axios'
 import API from '@/config/api'
-
+import { useRouter } from 'vue-router'
 /* ===========================
    ESTADO
 =========================== */
@@ -223,6 +228,7 @@ const form = ref({
   notas: '',
   estatus: 'Pendiente',
 })
+const router = useRouter()
 
 /* ===========================
    CARGAR PACIENTES
@@ -236,6 +242,17 @@ const fetchPacientes = async () => {
   } catch (error) {
     console.error('Error obteniendo pacientes:', error)
   }
+}
+
+const goToPerfilPaciente = () => {
+  if (!selectedCita.value?.paciente_id) return
+
+  router.push({
+    name: 'pacientePefil',
+    params: {
+      id: selectedCita.value.paciente_id,
+    },
+  })
 }
 
 /* ===========================
@@ -967,5 +984,32 @@ textarea {
     align-items: flex-start;
     gap: 6px;
   }
+}
+.detail-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-profile {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  background: #0ea5e9;
+  color: white;
+
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-profile:hover {
+  background: #0284c7;
+  transform: translateY(-1px);
 }
 </style>

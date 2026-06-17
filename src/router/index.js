@@ -11,7 +11,7 @@ import RecommendationsView from '@/views/dashboard/RecommendationsView.vue'
 import RegistroAdministrador from '@/views/auth/RegisterAdmin.vue'
 import HomeAdministrador from '@/views/dashboardAdmin/dashboardView.vue'
 import HorariosAdministrador from '@/views/dashboardAdmin/Horarios/horariosView.vue'
-import { useAuthStore } from '@/stores/authStore'
+import pacientePerfilAdmin from '@/views/dashboardAdmin/vistaPacienteView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -76,6 +76,11 @@ const router = createRouter({
       path: '/HorariosAdministrador',
       name: 'HorariosAdministrador',
       component: HorariosAdministrador,
+    },
+    {
+      path: '/pacientePefil',
+      name: 'pacientePefil',
+      component: pacientePerfilAdmin,
     },
   ],
 })
