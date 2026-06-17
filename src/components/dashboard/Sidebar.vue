@@ -2,7 +2,7 @@
   <aside :class="['sidebar', { open: mobileOpen }]">
     <div class="logo">🏥 Fisio</div>
 
-    <nav v-if="usuario?.Rol === 'user'">
+    <nav v-if="usuario?.Rol === 'user' || !usuario?.Rol">
       <router-link to="/dashboard">🏠 Dashboard</router-link>
       <router-link to="/profile">👤 Perfil</router-link>
       <router-link to="/appointments">📅 Citas</router-link>
