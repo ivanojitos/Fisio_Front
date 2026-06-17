@@ -55,7 +55,13 @@
           </div>
 
           <div class="list">
-            <div class="item" v-for="cita in citasDelDia" :key="cita.id">
+            <div
+              class="item"
+              v-for="cita in citasDelDia"
+              :key="cita.id"
+              @click="selectCita(cita)"
+              :class="{ active: selectedCita?.id === cita.id }"
+            >
               <div class="time">
                 {{ cita.hora }}
               </div>
@@ -313,9 +319,9 @@ const nextDay = () => {
    SELECCIONAR CITA
 =========================== */
 
-// const selectCita = (cita) => {
-//   selectedCita.value = cita
-// }
+const selectCita = (cita) => {
+  selectedCita.value = cita
+}
 
 /* ===========================
    CREAR CITA
@@ -394,7 +400,6 @@ const formatHora = (horaISO) => {
 const fetchCitas = async () => {
   try {
     const response = await axios.get(`${API}/api/citas`)
-    console.log(response.data.data)
     citas.value = response.data.data.map((c) => ({
       id: c.Id,
       fecha: c.Fecha.slice(0, 10), // <-- IMPORTANTE
@@ -402,6 +407,7 @@ const fetchCitas = async () => {
       tipo: c.Tipo,
       notas: c.Notas,
       paciente_id: c.Paciente_Id,
+      paciente_nombre: c.paciente_nombre,
       estatus: c.Estatus,
     }))
   } catch (error) {
@@ -483,6 +489,10 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.item.active {
+  border: 2px solid #0ea5e9;
+  background: #f0f9ff;
+}
 @media (max-width: 600px) {
   .results {
     position: absolute;

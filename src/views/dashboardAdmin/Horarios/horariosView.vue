@@ -281,7 +281,6 @@ const obtenerHorarios = async () => {
     })
 
     horariosGuardados.value = response.data.data
-    console.log(horariosGuardados)
   } catch (error) {
     successMessage.value = error
     showSuccessModal.value = false

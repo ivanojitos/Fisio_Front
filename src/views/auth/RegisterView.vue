@@ -131,8 +131,6 @@ const guardarUsuario = async () => {
     formData.append('lesion', form.value.lesion)
     formData.append('foto', form.value.foto)
 
-    console.log(formData)
-
     const response = await axios.post(`${API}/api/createPaciente`, formData)
 
     if (response.data.ok) {
